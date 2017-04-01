@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 
 class Header extends React.Component {
   constructor() {
@@ -7,13 +8,23 @@ class Header extends React.Component {
 
     }
   }
+  componentWillMount(){
+    console.log('componentWillMount',this.props.isAuthenticated);
+  }
   render(){
     return(
       <div>
-        Header
+        {this.props.isAuthenticated ? `Welcome ${this.props.currentUser} !` : 'Please Login!'}
       </div>
     )
   }
 }
-
-export default Header;
+Header.propTypes = {
+  isAuthenticated:React.PropTypes.bool.isRequired,
+  currentUser:React.PropTypes.string.isRequired
+}
+const mapStateToProps = (state) => ({
+  isAuthenticated:state.isAuthenticated,
+  currentUser:state.currentUser
+})
+export default connect(mapStateToProps)(Header);
